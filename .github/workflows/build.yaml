@@ -20,13 +20,22 @@ jobs:
           service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
           export_default_credentials: true
 
-      - name: Build Docker image
+      # - name: Build Docker image
+      #   run: |
+      #     gcloud builds submit --tag us-central1-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/gcp-flask-demo .
+
+      # - name: Deploy to Google Cloud Run
+      #   run: |
+      #     gcloud run deploy gcp-flask-demo \
+      #       --image us-central1-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/gcp-flask-demo \
+      #       --platform managed \
+      #       --region us-central1 \
+      #       --allow-unauthenticated
+
+      - name: build and push the docker image
+        env:
+          GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
         run: |
-          gcloud builds submit --tag us-central1-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/gcp-flask-demo .
-      - name: Deploy to Google Cloud Run
-        run: |
-          gcloud run deploy gcp-flask-demo \
-            --image us-central1-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/gcp-flask-demo \
-            --platform managed \
-            --region us-central1 \
-            --allow-unauthenticated
+          gcloud auth configure-docker us-central1-docker.pkg.dev
+          docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/gcp-flask-demo ./app
+          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/gcp-flask-demo
