@@ -31,3 +31,6 @@ jobs:
             --platform managed \
             --region us-central1 \
             --allow-unauthenticated
+
+
+            us-central1-docker.pkg.dev/wordpress-test-project-429717/gcp-flask-demo
