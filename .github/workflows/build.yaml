@@ -23,18 +23,6 @@ jobs:
       - name: Verify Dockerfile location
         run: ls -al ./app
 
-      - name: Build Docker image
-        run: |
-          gcloud builds submit --tag us-central1-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/gcp-flask-demo ./app
-
-      - name: Deploy to Google Cloud Run
-        run: |
-          gcloud run deploy gcp-flask-demo \
-            --image us-central1-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/gcp-flask-demo \
-            --platform managed \
-            --region us-central1 \
-            --allow-unauthenticated
-
       # - name: Build Docker image
       #   run: |
       #     gcloud builds submit --tag us-central1-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/gcp-flask-demo .
@@ -47,10 +35,10 @@ jobs:
       #       --region us-central1 \
       #       --allow-unauthenticated
 
-      # - name: build and push the docker image
-      #   env:
-      #     GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
-      #   run: |
-      #     gcloud auth configure-docker us-central1-docker.pkg.dev
-      #     docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/gcp-flask-demo/python:3.11-slim ./app
-      #     docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/gcp-flask-demo/python:3.11-slim
+      - name: build and push the docker image
+        env:
+          GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+        run: |
+          gcloud auth configure-docker us-central1-docker.pkg.dev
+          docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/gcp-flask-demo/python:3.11-slim ./app
+          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/gcp-flask-demo/python:3.11-slim
