@@ -22,15 +22,12 @@ jobs:
 
       - name: Build Docker image
         run: |
-          gcloud builds submit --tag gcr.io/${{ secrets.GOOGLE_PROJECT }}/gcp-flask-demo
+          gcloud builds submit --tag us-central1-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/gcp-flask-demo
 
       - name: Deploy to Google Cloud Run
         run: |
           gcloud run deploy gcp-flask-demo \
-            --image gcr.io/${{ secrets.GOOGLE_PROJECT }}/gcp-flask-demo \
+            --image us-central1-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/gcp-flask-demo \
             --platform managed \
             --region us-central1 \
             --allow-unauthenticated
-
-
-            us-central1-docker.pkg.dev/wordpress-test-project-429717/gcp-flask-demo
