@@ -22,7 +22,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          gcloud builds submit --tag us-central1-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/gcp-flask-demo
+          gcloud builds submit --tag us-central1-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/gcp-flask-demo ./app/Dockerfile
 
       - name: Deploy to Google Cloud Run
         run: |
